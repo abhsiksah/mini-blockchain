@@ -1,0 +1,76 @@
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
+
+public class Block {
+
+    private int previousHashvalue;
+    private String[] transactions;
+    private int blockHash;
+
+    public Block(int previousHashvalue, String[] transactions) {
+        this.previousHashvalue = previousHashvalue;
+        this.transactions = transactions;
+
+        Object[] contents = {Arrays.hashCode(transactions), previousHashvalue}; //this takes hased value of transactions and previous hash value which will be hashed all-together for a total hash value 
+        this.blockHash = Arrays.hashCode(contents); // now we will hash the contents of basically the whole node itself to get this value
+
+    }
+
+    public int getPreviousHash() {
+        return previousHashvalue;                       // we will need a return function for returning the values that we calculated
+    }
+
+    public String[] getTransaction() {
+        return transactions;
+    }
+
+    public int getBlockHash() {
+        return blockHash;
+    }
+}
+
+import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;                           
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+
+public class Main {
+
+    /**
+        Hash = hash id
+        Each block will have:
+            List of transactions
+            Previous Hash
+            Hash
+     */
+
+
+    ArrayList<Block> blockchain = new ArrayList<>();            // we can use other data structures also but list is more convinient for small projects like this
+
+    public static void main(String[] args) {
+
+        String[] genesisTransactions = {"a satoshi sent ivan 999900 bitcoin","hal finney sent 10 bitcoins to ivan"}; // this is the first node and hence called the genesis  node.
+        Block genesisBlock = new Block(0, genesisTransactions);
+
+        String[] block2Transactions = {"ivan sent 10 bitcoin to satoshi", "satoshi sent 10 bitcoin to starbuck"}; // blocks are actually refering to nodes
+        Block block2 = new Block(genesisBlock.getBlockHash(), block2Transactions);
+
+        String[] block3Transactions = {"ivan sent 999 bitcoin to my mom"};
+        Block block3 = new Block(block2.getBlockHash(), block3Transactions);  // so this way we can add multiple nodes as well
+
+        System.out.println("Hash of genesis block:");
+        System.out.println(genesisBlock.getBlockHash());
+
+        System.out.println("Hash of block 2:");
+        System.out.println(block2.getBlockHash());
+
+        System.out.println("Hash of block 3:");
+        System.out.println(block3.getBlockHash());
+
+    }
+
+
+}
